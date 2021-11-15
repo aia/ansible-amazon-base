@@ -49,4 +49,4 @@ jobs:
         run: poetry run yamllint .
 
       - name: Run Ansible Lint
-        run: ansible-lint
+        run: poetry run ansible-lint
