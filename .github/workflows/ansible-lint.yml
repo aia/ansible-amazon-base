@@ -17,3 +17,7 @@ jobs:
 
       - name: Run Ansible Lint
         uses: ansible/ansible-lint-action@master
+        with:
+          override-deps: |
+            ansible==2.11.6
+            ansible-lint==5.2.1
