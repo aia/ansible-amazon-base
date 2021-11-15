@@ -1,0 +1,5 @@
+---
+- name: List running containers
+  shell: docker ps    # noqa command-instead-of-shell
+  register: docker_output
+  changed_when: false

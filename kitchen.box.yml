@@ -1,0 +1,35 @@
+---
+driver:
+  name: vagrant
+  ssh:
+    insert_key: false
+  customize:
+    cpus: 4
+    memory: 4192
+
+verifier:
+  name: shell
+  command: |
+    py.test --disable-pytest-warnings \
+    --hosts="paramiko://${KITCHEN_USERNAME}@${KITCHEN_HOSTNAME}:${KITCHEN_PORT}?ssh_identity_file=${KITCHEN_SSH_KEY}" \
+    "tests/integration/${KITCHEN_SUITE}"
+
+provisioner:
+  name: ansible_playbook
+  hosts: test_kitchen
+  ansible_verbose: true
+  require_chef_for_busser: false
+  ansible_cfg_path: .ansible.cfg
+  env_vars:
+    ansible_skip_service: "true"
+
+platforms:
+  - name: amazon
+    driver:
+      box: amazon2
+
+suites:
+  - name: box
+    provisioner:
+      name: ansible_playbook
+      playbook: ./playbooks/box/box.yml

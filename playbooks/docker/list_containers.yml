@@ -1,0 +1,18 @@
+---
+- name: Install and configure a Docker server
+  hosts: all
+  become: true
+  vars:
+    - ansible_python_interpreter: auto_silent
+
+  tasks:
+    - name: Include a Docker playbook
+      include_role:
+        name: docker
+        tasks_from: docker.yml
+
+    - name: List running Docker containers
+      include_role:
+        name: docker
+        tasks_from: list_containers.yml
+    - debug: var=docker_output.stdout_lines   # noqa unnamed-task

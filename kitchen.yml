@@ -1,0 +1,50 @@
+---
+driver:
+  name: vagrant
+  customize:
+    cpus: 4
+    memory: 4192
+
+verifier:
+  name: shell
+  command: |
+    py.test --disable-pytest-warnings \
+    --hosts="paramiko://${KITCHEN_USERNAME}@${KITCHEN_HOSTNAME}:${KITCHEN_PORT}?ssh_identity_file=${KITCHEN_SSH_KEY}" \
+    "tests/integration/${KITCHEN_SUITE}"
+
+provisioner:
+  name: ansible_playbook
+  hosts: test_kitchen
+  ansible_verbose: true
+  require_chef_for_busser: false
+  ansible_cfg_path: .ansible.cfg
+  # ansible_verbosity: 4
+
+platforms:
+  - name: amazon
+    driver:
+      box: <%= ENV['KITCHEN_ANSIBLE_BOX'] || "amazon2-ansible" %>
+
+suites:
+  - name: docker
+    provisioner:
+      name: ansible_playbook
+      playbook: ./playbooks/docker/docker.yml
+
+  - name: cedocker
+    provisioner:
+      name: ansible_playbook
+      playbook: ./playbooks/docker/docker.yml
+    driver:
+      vm_hostname: cedocker.local
+      network:
+        - ['private_network', {ip: '192.168.98.121'}]
+
+  - name: gst_jupyter
+    provisioner:
+      name: ansible_playbook
+      playbook: ./playbooks/gst/gst_jupyter.yml
+    driver:
+      vm_hostname: jupyter.local
+      network:
+        - ['private_network', {ip: '192.168.98.122'}]

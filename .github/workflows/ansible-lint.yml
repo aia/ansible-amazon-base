@@ -1,0 +1,19 @@
+---
+name: Ansible Lint
+env:
+  PIP_DEFAULT_TIMEOUT: 100
+on: [pull_request, push]    # yamllint disable-line
+jobs:
+  ansible-linting:
+    name: Ansible Linting
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run YAML Lint
+        uses: ibiqlik/action-yamllint@v3
+
+      - name: Run Ansible Lint
+        uses: ansible/ansible-lint-action@master

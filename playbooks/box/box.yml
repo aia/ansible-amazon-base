@@ -1,0 +1,30 @@
+---
+- name: Update a VM and install Docker
+  hosts: all
+  become: true
+  vars:
+    - ansible_python_interpreter: auto_silent
+
+  tasks:
+    - name: Update yum packages except kernel
+      yum:
+        name: '*'
+        exclude: kernel*
+        state: latest   # noqa package-latest
+
+    - name: Include a Docker playbook
+      include_role:
+        name: docker
+        tasks_from: docker.yml
+
+    - name: Clean yum cache
+      shell: yum clean all    # noqa command-instead-of-shell
+      args:
+        warn: false
+      changed_when: false
+
+    - name: Remove yum cache
+      shell: rm -Rf /var/cache/yum    # noqa command-instead-of-shell
+      args:
+        warn: false
+      changed_when: false

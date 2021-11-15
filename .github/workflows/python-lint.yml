@@ -1,0 +1,47 @@
+---
+name: Python Lint
+env:
+  PIP_DEFAULT_TIMEOUT: 100
+on: [pull_request, push]    # yamllint disable-line
+jobs:
+  python-linting:
+    name: Python Linting
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Setup Python 3.8
+        uses: actions/setup-python@v2
+        with:
+          python-version: "3.8"
+          architecture: x64
+
+      - uses: actions/cache@v2
+        with:
+          path: ~/.cache/pip
+          key: ${{ runner.os }}-linting
+          restore-keys: ${{ runner.os }}-linting
+
+      - name: Install Black and Codespell
+        run: pip install black codespell
+
+      - name: Run Black
+        run: black --check .
+
+      - name: Run CodeSpell
+        run: codespell --quiet-level=2 --skip=".git" --skip=".kitchen"
+
+  markdown-linting:
+    name: Markdown Linting
+    runs-on: ubuntu-latest
+    if: github.event_name == 'push' || github.event.pull_request.head.repo.full_name != github.repository
+    steps:
+      - name: Checkout Code
+        uses: actions/checkout@v2
+
+      - name: Run Markdown Lint
+        uses: docker://avtodev/markdown-lint:v1
+        with:
+          args: "**/*.md"
