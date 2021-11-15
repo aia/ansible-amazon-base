@@ -2,6 +2,7 @@
 <!-- markdownlint-disable-file MD014 -->
 
 - [Ansible Amazon Base Repository](#ansible-amazon-base-repository)
+  - [About](#about)
   - [Setting Up Ansible Environment](#setting-up-ansible-environment)
     - [Configuring Python VENV and Ansible](#configuring-python-venv-and-ansible)
     - [Editor Configuration](#editor-configuration)
@@ -14,6 +15,7 @@
   - [Running Test Kitchen](#running-test-kitchen)
   - [Running Integration Tests](#running-integration-tests)
   - [Running Ansible Playbooks on AWS Instances](#running-ansible-playbooks-on-aws-instances)
+  - [Example Project: Build a Local Docker/Containerd Server VM](#example-project-build-a-local-dockercontainerd-server-vm)
   - [Ansible References](#ansible-references)
 
 ## About
