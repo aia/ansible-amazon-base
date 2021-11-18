@@ -88,7 +88,7 @@ VSCode should be configured for typical Python development with the following ex
 - [Gitlens](https://marketplace.visualstudio.com/items?itemName=eamodio.gitlens)
 
 VSCode should be configured to associate most of the files in the repository with Ansible.
-Check that your ansible files are have Ansible set in the "Select Language Mode".
+Check that your ansible files have Ansible set in the "Select Language Mode".
 In VSCode the difference between YAML and Ansible Language Mode is night and day.
 Example .vscode/settings.json
 
@@ -204,7 +204,7 @@ Add RVM to your profile
 Install test-kitchen gems
 
 ```text
-$ gem install test-kitchen kitchen-ansible kitchen-ec2
+$ gem install test-kitchen kitchen-vagrant kitchen-ansible kitchen-ec2
 ```
 
 ### Downloading Amazon Linux v2 Vagrant Box
@@ -335,29 +335,29 @@ Why bother with Docker Desktop when you can build your own Containerd Server?
 
 Check "Host Network Manager" in the File menu of your VirtualBox. Add an interface and make note of the subnet.
 
-Edit kitchen.yml cedocker suit and set private_network to a static IP of your choice.
+Edit kitchen.yml containerd suit and set private_network to a static IP of your choice.
 
 ```yaml
-  - name: cedocker
+  - name: containerd
     provisioner:
       name: ansible_playbook
       playbook: ./playbooks/docker/docker.yml
     driver:
-      vm_hostname: cedocker.local
+      vm_hostname: containerd.local
       network:
-        - ['private_network', {ip: '192.168.98.121'}]
+        - ['private_network', {ip: '192.168.56.121'}]
 ```
 
 Run kitchen converge
 
 ```text
-$ kitchen converge cedocker
+$ kitchen converge containerd
 ...
        PLAY RECAP *********************************************************************
        localhost                  : ok=5    changed=1    unreachable=0    failed=0    skipped=2    rescued=0    ignored=0
 
-       Downloading files from <cedocker-amazon>
-       Finished converging <cedocker-amazon> (0m5.54s).
+       Downloading files from <containerd-amazon>
+       Finished converging <containerd-amazon> (0m5.54s).
 -----> Test Kitchen is finished. (1m15.18s)
 ```
 
@@ -366,8 +366,8 @@ Change vagrant's user password from 'vagrant' to something secure.
 Add your SSH key to ~/.ssh/authorized_keys. Change permissions on /var/run/docker.sock.
 
 ```text
-$ ssh vagrant@192.168.98.121
-vagrant@192.168.98.121's password:
+$ ssh vagrant@192.168.56.121
+vagrant@192.168.56.121's password:
 Last login: Mon Nov 15 05:47:31 2021 from 10.0.2.2
 
        __|  __|_  )
@@ -379,31 +379,31 @@ https://aws.amazon.com/amazon-linux-2/
 This system is built by the Bento project by Chef Software
 More information can be found at https://github.com/chef/bento
 
-[vagrant@cedocker ~]$ passwd
+[vagrant@containerd ~]$ passwd
 Changing password for user vagrant.
 Changing password for vagrant.
 (current) UNIX password:
 New password:
 Retype new password:
 passwd: all authentication tokens updated successfully.
-[vagrant@cedocker ~]$ vi ~/.ssh/authorized_keys
-[vagrant@cedocker ~]$ sudo chmod a+rw /var/run/docker.sock
+[vagrant@containerd ~]$ vi ~/.ssh/authorized_keys
+[vagrant@containerd ~]$ sudo chmod a+rw /var/run/docker.sock
 exit
 logout
-Connection to 192.168.98.121 closed.
+Connection to 192.168.56.121 closed.
 ```
 
 Create a new Docker context:
 
 ```text
-$ docker context create cedocker --docker "host=ssh://vagrant@192.168.98.121"
-cedocker
-Successfully created context "cedocker"
-$ docker context use cedocker
+$ docker context create containerd1 --docker "host=ssh://vagrant@192.168.56.121"
+containerd
+Successfully created context "containerd1"
+$ docker context use containerd1
 $ docker context ls
-NAME         DESCRIPTION                               DOCKER ENDPOINT                KUBERNETES ENDPOINT   ORCHESTRATOR
-cedocker *                                             ssh://vagrant@192.168.98.121
-default      Current DOCKER_HOST based configuration   unix:///var/run/docker.sock                          swarm
+NAME            DESCRIPTION                               DOCKER ENDPOINT                KUBERNETES ENDPOINT   ORCHESTRATOR
+containerd1 *                                             ssh://vagrant@192.168.56.121
+default         Current DOCKER_HOST based configuration   unix:///var/run/docker.sock                          swarm
 ```
 
 Start using your new Containerd server:
@@ -417,7 +417,7 @@ Client: Docker Engine - Community
  Git commit:        b485636f4b
  Built:             Fri Oct 15 14:45:13 2021
  OS/Arch:           darwin/amd64
- Context:           cedocker
+ Context:           containerd1
  Experimental:      true
 
 Server:

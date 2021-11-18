@@ -31,14 +31,14 @@ suites:
       name: ansible_playbook
       playbook: ./playbooks/docker/docker.yml
 
-  - name: cedocker
+  - name: containerd
     provisioner:
       name: ansible_playbook
       playbook: ./playbooks/docker/docker.yml
     driver:
-      vm_hostname: cedocker.local
+      vm_hostname: containerd.local
       network:
-        - ['private_network', {ip: '192.168.98.121'}]
+        - ['private_network', {ip: '192.168.56.121'}]
 
   - name: gst_jupyter
     provisioner:
@@ -47,4 +47,4 @@ suites:
     driver:
       vm_hostname: jupyter.local
       network:
-        - ['private_network', {ip: '192.168.98.122'}]
+        - ['private_network', {ip: '192.168.56.122'}]
