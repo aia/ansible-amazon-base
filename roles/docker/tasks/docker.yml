@@ -11,6 +11,12 @@
     state: started
   when: lookup("env", "ansible_skip_service") != "true"
 
+- name: Add vagrant user to group docker
+  user:
+    name: vagrant
+    groups: docker
+    append: true
+
 - name: Check if Python3 is installed
   shell: rpm -qi python38 | grep -v "not installed"   # noqa risky-shell-pipe command-instead-of-shell
   args:
