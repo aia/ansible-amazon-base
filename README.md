@@ -201,10 +201,20 @@ Add RVM to your profile
 [[ -s "$HOME/.rvm/scripts/rvm" ]] && source "$HOME/.rvm/scripts/rvm"
 ```
 
-Install test-kitchen gems
+Change directory to anything other than ansible-amazon-base and change back to have RVM pull a ruby version
+and create a gemset.
 
 ```text
-$ gem install test-kitchen kitchen-vagrant kitchen-ansible kitchen-ec2
+$ cd ..
+$ cd ansible-amazon-base/
+ruby-3.0.0 - #gemset created /home/current.user/.rvm/gems/ruby-3.0.0@ansible-kitchen
+ruby-3.0.0 - #generating ansible-kitchen wrappers.............
+```
+
+After RVM configures Gemset, run bundler to install gems
+
+```text
+$ bundle install
 ```
 
 ### Downloading Amazon Linux v2 Vagrant Box
