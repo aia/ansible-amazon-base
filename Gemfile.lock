@@ -1,6 +1,7 @@
 GEM
   remote: https://rubygems.org/
   specs:
+    ast (2.4.2)
     aws-eventstream (1.2.0)
     aws-partitions (1.533.0)
     aws-sdk-core (3.122.1)
@@ -61,12 +62,30 @@ GEM
     net-ssh-gateway (2.0.0)
       net-ssh (>= 4.0.0)
     nori (2.6.0)
+    parallel (1.21.0)
+    parser (3.0.2.0)
+      ast (~> 2.4.1)
     pastel (0.8.0)
       tty-color (~> 0.5)
     pry (0.14.1)
       coderay (~> 1.1)
       method_source (~> 1.0)
+    rainbow (3.0.0)
+    regexp_parser (2.1.1)
     retryable (3.0.5)
+    rexml (3.2.5)
+    rubocop (1.23.0)
+      parallel (~> 1.10)
+      parser (>= 3.0.0.0)
+      rainbow (>= 2.2.2, < 4.0)
+      regexp_parser (>= 1.8, < 3.0)
+      rexml
+      rubocop-ast (>= 1.12.0, < 2.0)
+      ruby-progressbar (~> 1.7)
+      unicode-display_width (>= 1.4.0, < 3.0)
+    rubocop-ast (1.13.0)
+      parser (>= 3.0.1.1)
+    ruby-progressbar (1.11.0)
     rubyntlm (0.6.3)
     rubyzip (2.3.2)
     strings (0.2.1)
@@ -134,6 +153,7 @@ DEPENDENCIES
   kitchen-ec2
   kitchen-vagrant
   pry
+  rubocop
   test-kitchen
 
 BUNDLED WITH
