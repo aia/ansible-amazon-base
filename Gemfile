@@ -8,3 +8,5 @@ gem "pry"
 gem "rubocop"
 
 gem "rspec", "~> 3.10"
+
+gem "mixlib-shellout", "~> 3.2"
