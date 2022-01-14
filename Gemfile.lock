@@ -167,6 +167,7 @@ DEPENDENCIES
   kitchen-ansible
   kitchen-ec2
   kitchen-vagrant
+  mixlib-shellout (~> 3.2)
   pry
   rspec (~> 3.10)
   rubocop
