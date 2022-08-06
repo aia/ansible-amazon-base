@@ -1,0 +1,12 @@
+---
+- name: Install and configure a Nginx server
+  hosts: all
+  become: true
+  vars:
+    - ansible_python_interpreter: auto_silent
+
+  tasks:
+    - name: Include a Nginx playbook
+      include_role:
+        name: nginx
+        tasks_from: nginx.yml
