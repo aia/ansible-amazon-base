@@ -1,0 +1,39 @@
+server {
+	listen *:443 default_server ssl reuseport so_keepalive=2m:1m:5;
+	server_name	_;
+
+	# ModSecurity TBD
+	#modsecurity on;
+	#modsecurity_rules_file modsec_main.conf;
+
+	ssl_certificate	default.d/default_server.crt;
+	ssl_certificate_key	default.d/default_server.key;
+	include ssl_settings;
+
+	location / {
+		return 302 https://127.0.0.1/;
+	}
+
+	location /nginx_status {
+		# Turn on nginx stats
+		stub_status on;
+		# Do not log stats requests
+		access_log   off;
+		# Only allow access from localhost
+		allow 127.0.0.1;
+		deny all;
+	}
+}
+
+server {
+	listen *:80 default_server reuseport so_keepalive=2m:1m:5;
+	server_name		_;
+
+	# ModSecurity TBD
+	#modsecurity on;
+	#modsecurity_rules_file modsec_main.conf;
+
+	location / {
+		return			302 https://127.0.0.1/;
+	}
+}

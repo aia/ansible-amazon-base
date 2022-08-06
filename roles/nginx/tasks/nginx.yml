@@ -1,0 +1,138 @@
+---
+- name: Check if Nginx is installed
+  shell: rpm -qi nginx | grep -v "not installed"   # noqa risky-shell-pipe command-instead-of-shell
+  args:
+    warn: false
+  register: nginx_installed
+  changed_when: nginx_installed.stdout == ""
+  failed_when: false
+
+- name: Enable amazon-linux-extras nginx
+  shell: "amazon-linux-extras enable nginx1"   # noqa command-instead-of-shell
+  when: nginx_installed.stdout|length == 0
+
+- name: Install Nginx
+  yum:
+    name: nginx
+    state: present
+
+- name: Create Nginx directory
+  ansible.builtin.file:
+    path: /etc/nginx
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+
+- name: Create Nginx VHosts directory
+  ansible.builtin.file:
+    path: /etc/nginx/vhosts.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+
+- name: Create Nginx Default directory
+  ansible.builtin.file:
+    path: /etc/nginx/default.d
+    state: directory
+    owner: root
+    group: root
+    mode: '0750'
+
+- name: Create nginx.conf file from template
+  ansible.builtin.template:
+    src: nginx.conf.j2
+    dest: /etc/nginx/nginx.conf
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Create dhparams.pem file from template
+  ansible.builtin.template:
+    src: dhparams.pem.j2
+    dest: /etc/nginx/dhparams.pem
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Create ssl_settings file from template
+  ansible.builtin.template:
+    src: ssl_settings.j2
+    dest: /etc/nginx/ssl_settings
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Create proxy_settings file from template
+  ansible.builtin.template:
+    src: proxy_settings.j2
+    dest: /etc/nginx/proxy_settings
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Create Nginx WWW directory
+  ansible.builtin.file:
+    path: /var/www
+    state: directory
+    recurse: true
+    owner: root
+    group: root
+    mode: '0755'
+
+- name: Create Nginx 502 error file from template
+  ansible.builtin.template:
+    src: 502.html.j2
+    dest: /var/www/502.html
+    owner: root
+    group: root
+    mode: '0644'
+
+- name: Create Default Server conf file from template
+  ansible.builtin.template:
+    src: default_server.conf.j2
+    dest: /etc/nginx/default.d/default_server.conf
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Create Default Server crt file from template
+  ansible.builtin.template:
+    src: default_server.crt.j2
+    dest: /etc/nginx/default.d/default_server.crt
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Create Default Server key file from template
+  ansible.builtin.template:
+    src: default_server.key.j2
+    dest: /etc/nginx/default.d/default_server.key
+    owner: root
+    group: root
+    mode: '0600'
+
+- name: Create Default host_short map file from template
+  ansible.builtin.template:
+    src: host_short.map.j2
+    dest: /etc/nginx/default.d/host_short.map
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Create Default hostname_short map file from template
+  ansible.builtin.template:
+    src: hostname_short.map.j2
+    dest: /etc/nginx/default.d/hostname_short.map
+    owner: root
+    group: root
+    mode: '0640'
+
+- name: Create Default uniqueid map file from template
+  ansible.builtin.template:
+    src: uniqueid.map.j2
+    dest: /etc/nginx/default.d/uniqueid.map
+    owner: root
+    group: root
+    mode: '0640'

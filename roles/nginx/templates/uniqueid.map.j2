@@ -1,0 +1,4 @@
+map $http_x_correlation_id $uuid {
+    default    "${hostname_short}:${request_id}";
+    ~*         "${http_x_correlation_id}";
+}
