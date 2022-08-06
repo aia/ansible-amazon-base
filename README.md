@@ -323,7 +323,7 @@ In order to run Ansible Playbooks on AWS instances, first configure
 ANSIBLE_ROLES_PATH to point to the roles directory of the repository, e.g.
 
 ```text
-$ export ANSIBLE_ROLES_PATH=/Users/current.user/work/ansible-amazon-base/role
+$ export ANSIBLE_ROLES_PATH=/Users/current.user/work/ansible-amazon-base/roles
 ```
 
 Also configure ~/.ansible.cfg to format Ansible output as a more readable YAML
