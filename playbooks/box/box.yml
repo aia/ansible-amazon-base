@@ -45,13 +45,11 @@
       shell: yum clean all    # noqa command-instead-of-shell
       args:
         warn: false
-      #changed_when: false
 
     - name: Remove yum cache
       shell: rm -Rf /var/cache/yum    # noqa command-instead-of-shell
       args:
         warn: false
-      #changed_when: false
 
     - name: Uninstall amazon-linux-extras ansible
       yum:

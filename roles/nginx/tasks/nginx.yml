@@ -76,7 +76,7 @@
   ansible.builtin.file:
     path: /var/www
     state: directory
-    #recurse: true
+    # recurse: true
     owner: root
     group: root
     mode: '0755'
