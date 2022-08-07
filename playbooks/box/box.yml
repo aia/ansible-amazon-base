@@ -17,14 +17,42 @@
         name: docker
         tasks_from: docker.yml
 
+    - name: Check if Ansible is installed with Python3
+      shell: ansible --version | grep "python version" | grep 3.8   # noqa risky-shell-pipe command-instead-of-shell
+      args:
+        warn: false
+      register: ansible_python3_installed
+      changed_when: ansible_python3_installed.stdout == ""
+      failed_when: false
+
+    - name: Install Python3 Ansible
+      pip:
+        name: "ansible"
+        executable: pip3.8
+      when: ansible_python3_installed.stdout|length == 0
+
+    - name: Disable amazon-linux-extras ansible
+      shell: "amazon-linux-extras disable ansible2"   # noqa command-instead-of-shell
+      when: ansible_python3_installed.stdout|length == 0
+
+    - name: Add /usr/local/bin to secure_path in /etc/sudoers
+      lineinfile:
+        path: /etc/sudoers
+        regexp: '^Defaults    secure_path ='
+        line: Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/local/bin:/usr/bin
+
     - name: Clean yum cache
       shell: yum clean all    # noqa command-instead-of-shell
       args:
         warn: false
-      changed_when: false
 
     - name: Remove yum cache
       shell: rm -Rf /var/cache/yum    # noqa command-instead-of-shell
       args:
         warn: false
-      changed_when: false
+
+    - name: Uninstall amazon-linux-extras ansible
+      yum:
+        name: ansible
+        state: absent
+      when: ansible_python3_installed.stdout|length == 0

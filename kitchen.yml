@@ -48,3 +48,8 @@ suites:
       vm_hostname: jupyter.local
       network:
         - ['private_network', {ip: '192.168.56.122'}]
+
+  - name: nginx
+    provisioner:
+      name: ansible_playbook
+      playbook: ./playbooks/nginx/nginx.yml
