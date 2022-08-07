@@ -222,7 +222,7 @@ $ bundle install
 Amazon Linux v2 is a feature-rich Linux distribution maintained by Amazon. Amazon page about [Amazon Linux Images](https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/amazon-linux-2-virtual-machine.html#amazon-linux-2-virtual-machine-download)
 lists various formats available, including [Amazon Linux v2 virtualbox](https://cdn.amazonlinux.com/os-images/2.0.20211005.0/virtualbox/).
 
-Download Amazon Linux v2 vagrant box from [HashiCorp Vagrant Cloud](https://app.vagrantup.com/bento/boxes/amazonlinux-2).
+Older Amazon Linux v2 vagrant box can be downloaded from [HashiCorp Vagrant Cloud](https://app.vagrantup.com/bento/boxes/amazonlinux-2).
 
 Import vagrant box:
 
@@ -230,6 +230,9 @@ Import vagrant box:
 $ vagrant box add amazon2 <downloaded box>
 $ vagrant box list
 ```
+
+Latest Amazon Linux v2 box can be built from [Chef Bento](https://github.com/chef/bento/blob/main/packer_templates/amazonlinux/README_FIRST.md)
+project. Disabling Amazon SSM is a consideration.
 
 ### Build an Optimized Amazon Linux 2 Vagrant Box
 
