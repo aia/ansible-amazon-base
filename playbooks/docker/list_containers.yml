@@ -7,12 +7,12 @@
 
   tasks:
     - name: Include a Docker playbook
-      include_role:
+      ansible.builtin.include_role:
         name: docker
         tasks_from: docker.yml
 
     - name: List running Docker containers
-      include_role:
+      ansible.builtin.include_role:
         name: docker
         tasks_from: list_containers.yml
-    - debug: var=docker_output.stdout_lines   # noqa unnamed-task
+    - ansible.builtin.debug: var=docker_output.stdout_lines   # noqa name[missing] no-free-form

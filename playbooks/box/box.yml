@@ -7,18 +7,19 @@
 
   tasks:
     - name: Update yum packages except kernel
-      yum:
+      ansible.builtin.yum:
         name: '*'
         exclude: kernel*
         state: latest   # noqa package-latest
 
     - name: Include a Docker playbook
-      include_role:
+      ansible.builtin.include_role:
         name: docker
         tasks_from: docker.yml
 
     - name: Check if Ansible is installed with Python3
-      shell: ansible --version | grep "python version" | grep 3.8   # noqa risky-shell-pipe command-instead-of-shell
+      ansible.builtin.shell:
+        ansible --version | grep "python version" | grep 3.8   # noqa risky-shell-pipe command-instead-of-shell
       args:
         warn: false
       register: ansible_python3_installed
@@ -26,33 +27,36 @@
       failed_when: false
 
     - name: Install Python3 Ansible
-      pip:
+      ansible.builtin.pip:
         name: "ansible"
         executable: pip3.8
-      when: ansible_python3_installed.stdout|length == 0
+      when: ansible_python3_installed.stdout | length == 0
 
     - name: Disable amazon-linux-extras ansible
-      shell: "amazon-linux-extras disable ansible2"   # noqa command-instead-of-shell
-      when: ansible_python3_installed.stdout|length == 0
+      ansible.builtin.shell:
+        "amazon-linux-extras disable ansible2"   # noqa command-instead-of-shell
+      when: ansible_python3_installed.stdout | length == 0
 
     - name: Add /usr/local/bin to secure_path in /etc/sudoers
-      lineinfile:
+      ansible.builtin.lineinfile:
         path: /etc/sudoers
         regexp: '^Defaults    secure_path ='
         line: Defaults    secure_path = /sbin:/bin:/usr/sbin:/usr/local/bin:/usr/bin
 
-    - name: Clean yum cache
-      shell: yum clean all    # noqa command-instead-of-shell
+    - name: Clean yum cache    # noqa no-changed-when
+      ansible.builtin.shell:
+        yum clean all    # noqa command-instead-of-shell
       args:
         warn: false
 
-    - name: Remove yum cache
-      shell: rm -Rf /var/cache/yum    # noqa command-instead-of-shell
+    - name: Remove yum cache    # noqa no-changed-when
+      ansible.builtin.shell:
+        rm -Rf /var/cache/yum    # noqa command-instead-of-shell
       args:
         warn: false
 
     - name: Uninstall amazon-linux-extras ansible
-      yum:
+      ansible.builtin.yum:
         name: ansible
         state: absent
-      when: ansible_python3_installed.stdout|length == 0
+      when: ansible_python3_installed.stdout | length == 0

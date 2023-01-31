@@ -7,13 +7,13 @@ license = "MIT"
 
 [tool.poetry.dependencies]
 python = "^3.8"
-ansible = "^4.8.0"
+ansible = "6.7.0"
 paramiko = "^2.8.0"
 pytest-testinfra = "^6.4.0"
 colorama = "^0.4.4"
 yamllint = "^1.26.3"
 codespell = "^2.1.0"
-ansible-lint = "^5.2.1"
+ansible-lint = { version = "^6.9.0", markers = "platform_system != 'Windows'" }
 
 [tool.poetry.dev-dependencies]
 

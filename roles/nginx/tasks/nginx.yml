@@ -1,6 +1,7 @@
 ---
 - name: Check if Nginx is installed
-  shell: rpm -qi nginx | grep -v "not installed"   # noqa risky-shell-pipe command-instead-of-shell
+  ansible.builtin.shell:
+    rpm -qi nginx | grep -v "not installed"   # noqa risky-shell-pipe command-instead-of-shell
   args:
     warn: false
   register: nginx_installed
@@ -8,11 +9,12 @@
   failed_when: false
 
 - name: Enable amazon-linux-extras nginx
-  shell: "amazon-linux-extras enable nginx1"   # noqa command-instead-of-shell
+  ansible.builtin.shell:
+    "amazon-linux-extras enable nginx1"   # noqa command-instead-of-shell
   when: nginx_installed.stdout|length == 0
 
 - name: Install Nginx
-  yum:
+  ansible.builtin.yum:
     name: nginx
     state: present
 

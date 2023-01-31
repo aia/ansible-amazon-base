@@ -1,24 +1,25 @@
 ---
 - name: Install docker
-  yum:
+  ansible.builtin.yum:
     name: docker
     state: present
 
 - name: Start Docker
-  service:
+  ansible.builtin.service:
     name: docker
     enabled: yes    # yamllint disable-line
     state: started
   when: lookup("env", "ansible_skip_service") != "true"
 
 - name: Add vagrant user to group docker
-  user:
+  ansible.builtin.user:
     name: vagrant
     groups: docker
     append: true
 
 - name: Check if Python3 is installed
-  shell: rpm -qi python38 | grep -v "not installed"   # noqa risky-shell-pipe command-instead-of-shell
+  ansible.builtin.shell:
+    rpm -qi python38 | grep -v "not installed"   # noqa risky-shell-pipe command-instead-of-shell
   args:
     warn: false
   register: python38_installed
@@ -26,11 +27,12 @@
   failed_when: false
 
 - name: Enable amazon-linux-extras packages
-  shell: "amazon-linux-extras enable python3.8"   # noqa command-instead-of-shell
+  ansible.builtin.shell:
+    "amazon-linux-extras enable python3.8"   # noqa command-instead-of-shell
   when: python38_installed.stdout|length == 0
 
 - name: Install Python3
-  yum:
+  ansible.builtin.yum:
     name: python38
     state: latest   # noqa package-latest
   vars:
@@ -38,6 +40,6 @@
   when: python38_installed.stdout|length == 0
 
 - name: Install Python3 Docker
-  pip:
+  ansible.builtin.pip:
     name: "docker"
     executable: pip3.8
