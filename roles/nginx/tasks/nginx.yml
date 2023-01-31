@@ -1,6 +1,6 @@
 ---
 - name: Check if Nginx is installed
-  ansible.legacy.shell:
+  ansible.builtin.shell:
     rpm -qi nginx | grep -v "not installed"   # noqa risky-shell-pipe command-instead-of-shell
   args:
     warn: false
@@ -9,12 +9,12 @@
   failed_when: false
 
 - name: Enable amazon-linux-extras nginx
-  ansible.legacy.shell:
+  ansible.builtin.shell:
     "amazon-linux-extras enable nginx1"   # noqa command-instead-of-shell
   when: nginx_installed.stdout|length == 0
 
 - name: Install Nginx
-  ansible.legacy.yum:
+  ansible.builtin.yum:
     name: nginx
     state: present
 

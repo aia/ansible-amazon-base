@@ -7,6 +7,6 @@
 
   tasks:
     - name: Include a Nginx playbook
-      include_role:
+      ansible.builtin.include_role:
         name: nginx
         tasks_from: nginx.yml
