@@ -53,3 +53,7 @@ suites:
     provisioner:
       name: ansible_playbook
       playbook: ./playbooks/nginx/nginx.yml
+    driver:
+      vm_hostname: nginx.local
+      network:
+        - ['private_network', {ip: '192.168.56.123'}]

@@ -3,7 +3,7 @@
   hosts: all
   become: true
   vars:
-    - ansible_python_interpreter: auto_silent
+    ansible_python_interpreter: auto_silent
 
   tasks:
     - name: Update yum packages except kernel
