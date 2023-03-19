@@ -138,3 +138,10 @@
     owner: root
     group: root
     mode: '0640'
+
+- name: Start Nginx
+  ansible.builtin.service:
+    name: nginx
+    enabled: yes    # yamllint disable-line
+    state: started
+  when: lookup("env", "ansible_skip_service") != "true"
