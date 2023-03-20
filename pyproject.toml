@@ -11,11 +11,18 @@ ansible = "6.7.0"
 paramiko = "^2.8.0"
 pytest-testinfra = "^6.4.0"
 colorama = "^0.4.4"
-yamllint = "^1.26.3"
-codespell = "^2.1.0"
-ansible-lint = { version = "^6.9.0", markers = "platform_system != 'Windows'" }
 
-[tool.poetry.dev-dependencies]
+[tool.poetry.group.dev]
+optional = true
+
+[tool.poetry.group.dev.dependencies]
+ruff = "^0.0.254"
+pycodestyle = "^2.10.0"
+black = "^23.1.0"
+mypy = "^1.1.1"
+codespell = "^2.2.4"
+yamllint = "^1.26.3"
+ansible-lint = { version = "^6.9.0", markers = "platform_system != 'Windows'" }
 
 [build-system]
 requires = ["poetry-core>=1.0.0"]
